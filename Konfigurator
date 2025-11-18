@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terrassenüberdachung Konfigurator - Müllenhof Grote</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            background: #f5f5f5;
+            padding: 0;
+            margin: 0;
+        }
+
+        .konfigurator-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #ffffff;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 60px 20px 40px;
+            background: linear-gradient(135deg, #2b2b2b 0%, #3d3d3d 100%);
+            color: white;
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.15);
+        }
+
+        .logo-section {
+            margin-bottom: 30px;
+        }
+
+        .company-name {
+            font-size: 3em;
+            color: #FDB913;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .tagline {
+            font-size: 1.4em;
+            color: #ffffff;
+            font-weight: 300;
+            font-style: italic;
+            margin-bottom: 35px;
+            letter-spacing: 1px;
+        }
+
+        .header h1 {
+            font-size: 2.4em;
+            color: #ffffff;
+            margin-bottom: 15px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            color: #e0e0e0;
+            font-weight: 300;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 1.4fr 1fr;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .config-section {
+            background: white;
+            padding: 40px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+            border-radius: 15px;
+            border-top: 5px solid #FDB913;
+        }
+
+        .summary-section {
+            background: linear-gradient(145deg, #2b2b2b 0%, #1a1a1a 100%);
+            color: white;
+            padding: 40px;
+            position: sticky;
+            top: 20px;
+            height: fit-content;
+            box-shadow: 0 5px 30px rgba(0,0,0,0.3);
+            border-radius: 15px;
+            border-top: 5px solid #FDB913;
+        }
+
+        .summary-section h2 {
+            font-size: 2em;
+            margin-bottom: 35px;
+            text-align: center;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #FDB913;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .form-group {
+            margin-bottom: 40px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 18px;
+            color: #2b2b2b;
+            font-size: 1.15em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .wood-selector {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .wood-option {
+            border: 4px solid #e0e0e0;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            background: white;
+            text-align: center;
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .wood-option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(253, 185, 19, 0) 0%, rgba(253, 185, 19, 0.1) 100%);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .wood-option:hover {
+            border-color: #FDB913;
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(253, 185, 19, 0.35);
+        }
+
+        .wood-option:hover::before {
+            opacity: 1;
+        }
+
+        .wood-option.selected {
+            border-color: #FDB913;
+            background: linear-gradient(135deg, #fffbf0 0%, #fff8e1 100%);
+            box-shadow: 0 8px 30px rgba(253, 185, 19, 0.45);
+            transform: translateY(-5px);
+        }
+
+        .wood-option.selected::after {
+            content: '✓';
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #FDB913;
+            color: #2b2b2b;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.3em;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        }
+
+        .wood-image {
+            width: 100%;
+            height: 140px;
+            object-fit: cover;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border: 2px solid #e0e0e0;
+            transition: all 0.3s;
+        }
+
+        .wood-option:hover .wood-image,
+        .wood-option.selected .wood-image {
+            border-color: #FDB913;
+            transform: scale(1.05);
+        }
+
+        .wood-name {
+            font-weight: 700;
+            color: #2b2b2b;
+            margin-bottom: 10px;
+            font-size: 1.15em;
+        }
+
+        .wood-price {
+            color: #FDB913;
+            font-weight: 700;
+            font-size: 1.05em;
+        }
+
+        select {
+            width: 100%;
+            padding: 18px 20px;
+            border: 4px solid #e0e0e0;
+            background: white;
+            font-size: 1.05em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #333333;
+            font-weight: 600;
+            border-radius: 10px;
+        }
+
+        select:hover {
+            border-color: #FDB913;
+            box-shadow: 0 3px 15px rgba(253, 185, 19, 0.2);
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #FDB913;
+            box-shadow: 0 0 0 4px rgba(253, 185, 19, 0.25);
+        }
+
+        .size-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-wrapper label {
+            position: absolute;
+            top: -10px;
+            left: 15px;
+            background: white;
+            padding: 0 8px;
+            font-size: 0.85em;
+            color: #666;
+            font-weight: 600;
+            text-transform: none;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 18px 20px;
+            border: 4px solid #e0e0e0;
+            background: white;
+            font-size: 1.05em;
+            transition: all 0.3s ease;
+            color: #333333;
+            font-weight: 600;
+            border-radius: 10px;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #FDB913;
+            box-shadow: 0 0 0 4px rgba(253, 185, 19, 0.25);
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            padding: 22px 25px;
+            background: white;
+            border: 4px solid #e0e0e0;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border-radius: 12px;
+        }
+
+        .checkbox-item:hover {
+            border-color: #FDB913;
+            background: linear-gradient(135deg, #fffbf0 0%, #fff8e1 100%);
+            transform: translateX(8px);
+            box-shadow: 0 5px 20px rgba(253, 185, 19, 0.25);
+        }
+
+        .checkbox-item.checked {
+            border-color: #FDB913;
+            background: linear-gradient(135deg, #fffbf0 0%, #fff8e1 100%);
+            box-shadow: 0 5px 20px rgba(253, 185, 19, 0.35);
+        }
+
+        input[type="checkbox"] {
+            width: 26px;
+            height: 26px;
+            margin-right: 18px;
+            cursor: pointer;
+            accent-color: #FDB913;
+        }
+
+        .checkbox-item label {
+            flex: 1;
+            cursor: pointer;
+            margin: 0;
+            font-weight: 600;
+            color: #333333;
+            font-size: 1.05em;
+        }
+
+        .price-tag {
+            font-weight: 700;
+            color: #FDB913;
+            font-size: 1.1em;
+            padding: 5px 15px;
+            background: rgba(253, 185, 19, 0.1);
+            border-radius: 20px;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #fffbf0 0%, #fff8e1 100%);
+            border-left: 6px solid #FDB913;
+            padding: 25px;
+            margin-top: 35px;
+            box-shadow: 0 3px 15px rgba(253, 185, 19, 0.2);
+            border-radius: 10px;
+        }
+
+        .info-box p {
+            color: #666666;
+            font-size: 0.98em;
+            line-height: 1.8;
+        }
+
+        .info-box strong {
+            color: #2b2b2b;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 18px 0;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.15);
+            font-size: 1.05em;
+        }
+
+        .summary-item span:first-child {
+            opacity: 0.85;
+            font-weight: 400;
+        }
+
+        .summary-item span:last-child {
+            font-weight: 700;
+        }
+
+        .area-display {
+            text-align: center;
+            padding: 35px;
+            background: linear-gradient(135deg, rgba(253, 185, 19, 0.2) 0%, rgba(253, 185, 19, 0.3) 100%);
+            border: 4px solid #FDB913;
+            margin: 35px 0;
+            font-size: 1.05em;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(253, 185, 19, 0.3);
+        }
+
+        .area-display strong {
+            display: block;
+            font-size: 3em;
+            margin-bottom: 10px;
+            color: #FDB913;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .total-price {
+            margin-top: 35px;
+            padding: 40px;
+            background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%);
+            border: 5px solid #FDB913;
+            text-align: center;
+            border-radius: 15px;
+            box-shadow: 0 5px 25px rgba(253, 185, 19, 0.4);
+        }
+
+        .total-price .label {
+            font-size: 1.15em;
+            margin-bottom: 18px;
+            opacity: 0.9;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 400;
+        }
+
+        .total-price .price {
+            font-size: 3.5em;
+            font-weight: 700;
+            color: #FDB913;
+            text-shadow: 2px 2px 6px rgba(0,0,0,0.3);
+        }
+
+        .cta-button {
+            width: 100%;
+            padding: 22px;
+            margin-top: 30px;
+            background: linear-gradient(135deg, #FDB913 0%, #e5a510 100%);
+            color: #2b2b2b;
+            border: none;
+            font-size: 1.15em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(253, 185, 19, 0.4);
+        }
+
+        .cta-button:hover {
+            background: linear-gradient(135deg, #e5a510 0%, #d49510 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 35px rgba(253, 185, 19, 0.6);
+        }
+
+        .cta-button:active {
+            transform: translateY(0);
+        }
+
+        @media (max-width: 1024px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+
+            .wood-selector {
+                grid-template-columns: 1fr;
+            }
+
+            .summary-section {
+                position: static;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .size-inputs {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .company-name {
+                font-size: 2.2em;
+            }
+
+            .konfigurator-container {
+                padding: 10px;
+            }
+
+            .config-section,
+            .summary-section {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="konfigurator-container">
+        <div class="header">
+            <div class="logo-section">
+                <div class="company-name">müllenhof grote</div>
+                <div class="tagline">holz ist leben.</div>
+            </div>
+            <h1>Terrassenüberdachung Konfigurator</h1>
+            <p>Stellen Sie sich Ihre individuelle Terrassenüberdachung zusammen</p>
+        </div>
+
+        <div class="content">
+            <div class="config-section">
+                <div class="form-group">
+                    <label>Holzart wählen</label>
+                    <div class="wood-selector">
+                        <div class="wood-option selected" onclick="selectWood('fichte', 150, this)">
+                            <img src="https://images.unsplash.com/photo-1620843002805-05a08cb72f57?w=300&h=200&fit=crop&q=80" alt="Fichte Holz" class="wood-image">
+                            <div class="wood-name">Fichte</div>
+                            <div class="wood-price">150 €/m²</div>
+                        </div>
+                        <div class="wood-option" onclick="selectWood('laerche', 200, this)">
+                            <img src="https://images.unsplash.com/photo-1585708796664-fc45db36f764?w=300&h=200&fit=crop&q=80" alt="Lärche Holz" class="wood-image">
+                            <div class="wood-name">Lärche</div>
+                            <div class="wood-price">200 €/m²</div>
+                        </div>
+                        <div class="wood-option" onclick="selectWood('eiche', 250, this)">
+                            <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=300&h=200&fit=crop&q=80" alt="Eiche Holz" class="wood-image">
+                            <div class="wood-name">Eiche</div>
+                            <div class="wood-price">250 €/m²</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="bedachung">Bedachung wählen</label>
+                    <select id="bedachung" onchange="calculatePrice()">
+                        <option value="180">VSG-Glas (180 €/m²)</option>
+                        <option value="120">Polycarbonat (120 €/m²)</option>
+                        <option value="90">Doppelstegplatten (90 €/m²)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Maße eingeben (Min: 2x2m | Max: 8x5m)</label>
+                    <div class="size-inputs">
+                        <div class="input-wrapper">
+                            <input type="number" id="breite" placeholder="z.B. 4.0" min="2" max="8" step="0.1" value="4" oninput="calculatePrice()">
+                            <label>Breite in Meter</label>
+                        </div>
+                        <div class="input-wrapper">
+                            <input type="number" id="tiefe" placeholder="z.B. 3.0" min="2" max="5" step="0.1" value="3" oninput="calculatePrice()">
+                            <label>Tiefe in Meter</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Zusatzoptionen</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item" onclick="toggleCheckbox('led')">
+                            <input type="checkbox" id="led" onchange="calculatePrice(); updateCheckboxStyle()">
+                            <label for="led">LED-Beleuchtung</label>
+                            <span class="price-tag">+ 350 €</span>
+                        </div>
+                        <div class="checkbox-item" onclick="toggleCheckbox('seitenwaende')">
+                            <input type="checkbox" id="seitenwaende" onchange="calculatePrice(); updateCheckboxStyle()">
+                            <label for="seitenwaende">Seitenwände</label>
+                            <span class="price-tag">+ 800 €</span>
+                        </div>
+                        <div class="checkbox-item" onclick="toggleCheckbox('regenrinne')">
+                            <input type="checkbox" id="regenrinne" onchange="calculatePrice(); updateCheckboxStyle()">
+                            <label for="regenrinne">Regenrinne</label>
+                            <span class="price-tag">+ 250 €</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <p><strong>Hinweis:</strong> Alle Preise sind inkl. Grundpreis von 500€ und verstehen sich zzgl. MwSt. und Versandkosten. Die finale Berechnung erfolgt nach Aufmaß vor Ort.</p>
+                </div>
+            </div>
+
+            <div class="summary-section">
+                <h2>Ihre Konfiguration</h2>
+
+                <div class="summary-item">
+                    <span>Holzart:</span>
+                    <span id="summary-holz">Fichte</span>
+                </div>
+
+                <div class="summary-item">
+                    <span>Bedachung:</span>
+                    <span id="summary-bedachung">VSG-Glas</span>
+                </div>
+
+                <div class="summary-item">
+                    <span>Maße:</span>
+                    <span id="summary-masse">4.0m x 3.0m</span>
+                </div>
+
+                <div class="area-display">
+                    <strong id="flaeche">12.0 m²</strong>
+                    Gesamtfläche
+                </div>
+
+                <div class="summary-item">
+                    <span>Grundpreis:</span>
+                    <span>500,00 €</span>
+                </div>
+
+                <div class="summary-item">
+                    <span>Holz + Bedachung:</span>
+                    <span id="summary-material">0,00 €</span>
+                </div>
+
+                <div class="summary-item" id="summary-extras-container" style="display: none;">
+                    <span>Extras:</span>
+                    <span id="summary-extras">0,00 €</span>
+                </div>
+
+                <div class="total-price">
+                    <div class="label">Gesamtpreis</div>
+                    <div class="price" id="total-price">0,00 €</div>
+                </div>
+
+                <button class="cta-button" onclick="sendInquiry()">📧 Unverbindliche Anfrage senden</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedWoodPrice = 150;
+        let selectedWoodName = 'Fichte';
+
+        function selectWood(name, price, element) {
+            document.querySelectorAll('.wood-option').forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+            
+            selectedWoodPrice = price;
+            selectedWoodName = name.charAt(0).toUpperCase() + name.slice(1);
+            
+            calculatePrice();
+        }
+
+        function toggleCheckbox(id) {
+            const checkbox = document.getElementById(id);
+            checkbox.checked = !checkbox.checked;
+            calculatePrice();
+            updateCheckboxStyle();
+        }
+
+        function updateCheckboxStyle() {
+            const checkboxes = ['led', 'seitenwaende', 'regenrinne'];
+            checkboxes.forEach(id => {
+                const checkbox = document.getElementById(id);
+                const parent = checkbox.parentElement;
+                if (checkbox.checked) {
+                    parent.classList.add('checked');
+                } else {
+                    parent.classList.remove('checked');
+                }
+            });
+        }
+
+        function calculatePrice() {
+            const holzPreis = selectedWoodPrice;
+            const bedachungPreis = parseFloat(document.getElementById('bedachung').value);
+            const breite = parseFloat(document.getElementById('breite').value) || 0;
+            const tiefe = parseFloat(document.getElementById('tiefe').value) || 0;
+            
+            const bedachungSelect = document.getElementById('bedachung');
+            const bedachungName = bedachungSelect.options[bedachungSelect.selectedIndex].text.split(' (')[0];
+            
+            if (breite < 2 || breite > 8) {
+                document.getElementById('breite').style.borderColor = '#e74c3c';
+            } else {
+                document.getElementById('breite').style.borderColor = '#e0e0e0';
+            }
+            
+            if (tiefe < 2 || tiefe > 5) {
+                document.getElementById('tiefe').style.borderColor = '#e74c3c';
+            } else {
+                document.getElementById('tiefe').style.borderColor = '#e0e0e0';
+            }
+            
+            const flaeche = breite * tiefe;
+            const grundpreis = 500;
+            const materialPreis = flaeche * (holzPreis + bedachungPreis);
+            
+            let extrasPreis = 0;
+            if (document.getElementById('led').checked) extrasPreis += 350;
+            if (document.getElementById('seitenwaende').checked) extrasPreis += 800;
+            if (document.getElementById('regenrinne').checked) extrasPreis += 250;
+            
+            const gesamtpreis = grundpreis + materialPreis + extrasPreis;
+            
+            document.getElementById('summary-holz').textContent = selectedWoodName;
+            document.getElementById('summary-bedachung').textContent = bedachungName;
+            document.getElementById('summary-masse').textContent = `${breite.toFixed(1)}m x ${tiefe.toFixed(1)}m`;
+            document.getElementById('flaeche').textContent = flaeche.toFixed(2) + ' m²';
+            document.getElementById('summary-material').textContent = materialPreis.toFixed(2).replace('.', ',') + ' €';
+            
+            if (extrasPreis > 0) {
+                document.getElementById('summary-extras-container').style.display = 'flex';
+                document.getElementById('summary-extras').textContent = extrasPreis.toFixed(2).replace('.', ',') + ' €';
+            } else {
+                document.getElementById('summary-extras-container').style.display = 'none';
+            }
+            
+            document.getElementById('total-price').textContent = gesamtpreis.toFixed(2).replace('.', ',') + ' €';
+        }
+        
+        function sendInquiry() {
+            const breite = document.getElementById('breite').value;
+            const tiefe = document.getElementById('tiefe').value;
+            
+            const bedachungSelect = document.getElementById('bedachung');
+            const bedachungName = bedachungSelect.options[bedachungSelect.selectedIndex].text.split(' (')[0];
+            
+            const led = document.getElementById('led').checked ? 'Ja' : 'Nein';
+            const seitenwaende = document.getElementById('seitenwaende').checked ? 'Ja' : 'Nein';
+            const regenrinne = document.getElementById('regenrinne').checked ? 'Ja' : 'Nein';
+            
+            const gesamtpreis = document.getElementById('total-price').textContent;
+            
+            const subject = 'Anfrage Terrassenüberdachung Konfigurator';
+            const body = `Hallo,
+
+ich interessiere mich für eine Terrassenüberdachung mit folgender Konfiguration:
+
+HOLZART: ${selectedWoodName}
+BEDACHUNG: ${bedachungName}
+MASSE: ${breite}m x ${tiefe}m
+
+EXTRAS:
+- LED-Beleuchtung: ${led}
+- Seitenwände: ${seitenwaende}
+- Regenrinne: ${regenrinne}
+
+GESCHÄTZTER GESAMTPREIS: ${gesamtpreis}
+
+Bitte kontaktieren Sie mich für ein unverbindliches Angebot.
+
+Mit freundlichen Grüßen`;
+
+            window.location.href = `mailto:info@muellenhof-grote.de?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        }
+        
+        calculatePrice();
+        updateCheckboxStyle();
+    </script>
+</body>
+</html>
